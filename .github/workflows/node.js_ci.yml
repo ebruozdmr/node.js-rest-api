@@ -1,7 +1,7 @@
 # This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
 
 #optional
-name: React Form with Auth CI   
+name: Node.js Rest Api CI 
 
  #required
  #triggers workflow with push and pull_request events
