@@ -20,9 +20,9 @@ app.use("/", Auth);
 app.use("/", Product);
 app.use("/", User);
 
-// app.get("/", (req, res) => {
-//   res.json({ message: "REST API" });
-// });
+app.get("/", (req, res) => {
+  res.json({ message: "REST API" });
+});
 
 connectDB();
 
