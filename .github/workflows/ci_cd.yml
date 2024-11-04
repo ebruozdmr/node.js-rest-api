@@ -38,6 +38,8 @@ jobs:
       - name: Deploy
         # only master branch commits
         if: github.ref== 'refs/heads/master'
+        env:
+          DB_URI: ${{secrets.DB_URI}}
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
