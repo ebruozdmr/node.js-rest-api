@@ -11,13 +11,8 @@ on:
     branches: ["master"]
 
 jobs:
-  deploy:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-        node-version: [20.x]
-
+  build:
+    runs-on: ubuntu-latest
     #required
     #sequence of tasks
     steps:
@@ -25,22 +20,26 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Node.js ${{ matrix.node-version }}
+      - name: Set Up Node.js ${{ matrix.node-version }}
         #selects an action
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 20.x
           cache: "npm"
 
       - name: Install Dependencies
         run: npm ci
 
-        # testing for deploy script
+      - name: Build
+        run: npm run build --if-present
+
       - name: Deploy
-        env:
-          DB_URI: ${{secrets.DB_URI}}
+
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git remote set-url origin https://${{ secrets.ACTIONS_DEPLOY_ACCESS_TOKEN }}@github.com/${{ github.repository }}
           npm run deploy
+          sleep 10
+          kill -9 $(cat deploy_pid.txt) || echo "Process already finished"
+          rm deploy_pid.txt
