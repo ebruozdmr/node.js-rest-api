@@ -39,7 +39,10 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git remote set-url origin https://${{ secrets.ACTIONS_DEPLOY_ACCESS_TOKEN }}@github.com/${{ github.repository }}
-          npm run deploy
+          nohup npm run deploy &
+          echo $! > deploy_pid.txt
+      - name: Wait and Stop Deploy
+        run: |
           sleep 10
-          kill -9 $(cat deploy_pid.txt) || echo "Process already finished"
+          kill -9 $(cat deploy_pid.txt) 2>/dev/null || true
           rm deploy_pid.txt
