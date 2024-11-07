@@ -21,7 +21,7 @@ app.use("/", Product);
 app.use("/", User);
 
 app.get("/", (req, res) => {
-  res.json({ message: "REST API" });
+  res.json({ message: "THE NODEJS REST API" });
 });
 
 connectDB();
